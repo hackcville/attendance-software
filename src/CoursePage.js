@@ -10,6 +10,7 @@ let x = -1;
 class CoursePage extends React.Component {
   constructor(props) {
     super(props);
+    this.nameInput = React.createRef();
     this.state = {
       courses: [],
       courseVal: "",
@@ -26,6 +27,7 @@ class CoursePage extends React.Component {
       studying: "",
       event: ""
     };
+    //this.focusFunc = this.focusFunc.bind(this)
   }
 
   componentDidMount() {
@@ -78,17 +80,26 @@ class CoursePage extends React.Component {
     }
   }
 
+  // focusFunc(){
+  //   this.nameInput.focus()
+  // }
+
+  // handleClick = (e) => {
+  //   //this.nameInput.click(); // this does not seem to be clicking the textboc
+  //   this.nameInput.focus(); // this does focus the textbox
+  // }
+
 
   render() {
       if (this.state.mount){
         if (!this.state.redirect){
         return <div id="welcome-screen" className="container">
             <div>{this.courseListFunction()}</div>
-            <div className="welcome"><h1>Welcome!</h1></div>
+            <div className="welcome"><h1>What brings you to HackCville?</h1></div>
             <div className="buttons">
               <div className="all-courses"> {this.buttonDataFunction()}</div>
               <div className="other">
-                <div><button onClick = {() => {this.setState({OHBoolean: true, officeHours: "Office Hours"}); this.setRedirect()}}>Office Hours</button></div>
+                <div><button onClick = {() => {this.setState({OHBoolean: true, officeHours: "Office Hours"}); this.setRedirect();}}>Office Hours</button></div>
                 <div><button onClick = {() => {this.setState({studyingBoolean: true, studying: "Studying"}); this.setRedirect()}}>Studying</button></div>
                 <div><button onClick = {() => {this.setState({eventBoolean: true, event: "Event"}); this.setRedirect()}}>Event</button></div>
               </div>

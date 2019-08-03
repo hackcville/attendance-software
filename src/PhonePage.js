@@ -2,8 +2,9 @@ import React from "react"
 import Welcome from "./Welcome"
 import CoursePage from "./CoursePage"
 import WeekNum from "./WeekNumberFunction"
+import preventDoubleTapZoom from "./preventZoomOnDoubleTap"
 
-let phoneValue = "-"; // need this because of issues with onSubmit and the way variables get stored in state
+let phoneValue = ""; // need this because of issues with onSubmit and the way variables get stored in state
 let theRecords = [];
 let studentObjectList = {}; // used for determining which attendance column to update
 const API_KEY = process.env.REACT_APP_AIRTABLE_API_KEY;
@@ -14,7 +15,7 @@ class Phone extends React.Component{
         super(props);
         this.state = {
           students: [], // fields for each student in AirTable Fall 2019 involvement
-          phone: "", // phone number student inputs
+          phone: "Input Your Phone Number", // phone number student inputs
           idVal: "", // student ID value in AirTable
           valid: true, // set equal to false when the number a student inputs is not valid, is used to show error messages
           attendanceValStudying: null, 
@@ -24,7 +25,8 @@ class Phone extends React.Component{
           redirectBack: false, // set equal to true when back button clicked, is used to redirect to first page
           studentName: "", // name of student whose valid phone number is submitted
           pointsVal: null, // is set equal to the number of points the student has in AirTable
-          updatedPoints: null // number of points student has upon submitting form
+          updatedPoints: null, // number of points student has upon submitting form
+          numberClicked: "",
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,6 +59,9 @@ class Phone extends React.Component{
         }
         console.log("loop complete")
     }
+    else{
+      this.setState({idVal: ""})
+    }
   }
 
       componentDidMount(){
@@ -82,9 +87,30 @@ class Phone extends React.Component{
       })
     }
 
-    handleChange(event){
-      this.setState({phone: event.target.value, valid: true});
-      phoneValue = event.target.value
+    handleChange(){
+      if (this.state.phone === "Input Your Phone Number"){
+        let numbersTyped = this.state.numberClicked;
+        this.setState({phone: numbersTyped, valid: true});
+        phoneValue = numbersTyped;
+        this.studentData();
+      }
+      else {
+      let numbersTyped = this.state.phone + this.state.numberClicked;
+      this.setState({phone: numbersTyped, valid: true});
+      phoneValue = numbersTyped;
+      this.studentData();
+      }
+    }
+
+    numberUpdate(numberButton){
+      this.setState({numberClicked: numberButton}, this.handleChange);
+    }
+
+    backspaceFunc(){
+      let currentPhoneVal = this.state.phone
+      currentPhoneVal = currentPhoneVal.slice(0, currentPhoneVal.length-1)
+      this.setState({phone: currentPhoneVal})
+      phoneValue = currentPhoneVal;
       this.studentData();
     }
 
@@ -151,8 +177,6 @@ base('Fall 2019 Involvement').update(idValue, {
 });
 this.setState({updatedPoints: updatedPointVals})
 
-  let updatedCourseAttendance = courseAttendanceValue + 1;
-
 base('Courses').update(""+courseIDVal, {
 [weekNumberValue]: updatedCourseAttendance
 }, function(err, record) {
@@ -199,42 +223,130 @@ renderRedirectBack = () => {
           return <div id="phone-screen" className="container">
               <div className="heading">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}</div>
               <div className="form"> 
-                <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone} onChange={this.handleChange}></input>
+                {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
+                <div>{this.state.phone}</div>
                 <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
                 <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
               </div>
+              <div className="keypad">
+                  <div className="row1">
+                    <button touch-action="manipulation" onTouchStart={preventDoubleTapZoom} id="button1" onClick={() => {this.numberUpdate("1")}}>1</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button2" onClick={() => {this.numberUpdate("2")}}>2</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button3" onClick={() => {this.numberUpdate("3")}}>3</button>
+                  </div>
+                  <div className="row2">
+                    <button onTouchStart={preventDoubleTapZoom} id="button4" onClick={() => {this.numberUpdate("4")}}>4</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button5" onClick={() => {this.numberUpdate("5")}}>5</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button6" onClick={() => {this.numberUpdate("6")}}>6</button>
+                  </div>
+                  <div className="row3">
+                    <button onTouchStart={preventDoubleTapZoom} id="button7" onClick={() => {this.numberUpdate("7")}}>7</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button8" onClick={() => {this.numberUpdate("8")}}>8</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
+                  </div>
+                  <div className="row4">
+                    <button onTouchStart={preventDoubleTapZoom} id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
+                    <button onTouchStart={preventDoubleTapZoom} id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                  </div>
+                </div>
             </div>
             }
             else if (!this.state.redirect && !this.state.redirectBack && !this.state.valid && phoneValue.length < 10){
               return <div className="container">
                 <div className="heading">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}</div>
                 <div className="form"> 
-                  <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone} onChange={this.handleChange}></input>
+                  <div>{this.state.phone}</div>
                   <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
                   <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
                   </div>
                   <div className="error-message">Need at least 10 digits. Please try again.</div>
+                  <div className="keypad">
+                  <div className="row1">
+                    <button id="button1" onClick={() => {this.numberUpdate("1")}}>1</button>
+                    <button id="button2" onClick={() => {this.numberUpdate("2")}}>2</button>
+                    <button id="button3" onClick={() => {this.numberUpdate("3")}}>3</button>
+                  </div>
+                  <div className="row2">
+                    <button id="button4" onClick={() => {this.numberUpdate("4")}}>4</button>
+                    <button id="button5" onClick={() => {this.numberUpdate("5")}}>5</button>
+                    <button id="button6" onClick={() => {this.numberUpdate("6")}}>6</button>
+                  </div>
+                  <div className="row3">
+                    <button id="button7" onClick={() => {this.numberUpdate("7")}}>7</button>
+                    <button id="button8" onClick={() => {this.numberUpdate("8")}}>8</button>
+                    <button id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
+                  </div>
+                  <div className="row4">
+                    <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                  </div>
+                </div>
                 </div>
             }
             else if (!this.state.redirect && !this.state.redirectBack && !this.state.valid && phoneValue.length > 10){
               return <div className="container">
                 <div className="header">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}</div>
                 <div className="form"> 
-                  <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone} onChange={this.handleChange}></input>
+                {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
+                  <div>{this.state.phone}</div>
                   <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
                   <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
                   </div>
                   <div className="error-message">Need only 10 digits. Please try again.</div>
+                  <div className="keypad">
+                  <div className="row1">
+                    <button id="button1" onClick={() => {this.numberUpdate("1")}}>1</button>
+                    <button id="button2" onClick={() => {this.numberUpdate("2")}}>2</button>
+                    <button id="button3" onClick={() => {this.numberUpdate("3")}}>3</button>
+                  </div>
+                  <div className="row2">
+                    <button id="button4" onClick={() => {this.numberUpdate("4")}}>4</button>
+                    <button id="button5" onClick={() => {this.numberUpdate("5")}}>5</button>
+                    <button id="button6" onClick={() => {this.numberUpdate("6")}}>6</button>
+                  </div>
+                  <div className="row3">
+                    <button id="button7" onClick={() => {this.numberUpdate("7")}}>7</button>
+                    <button id="button8" onClick={() => {this.numberUpdate("8")}}>8</button>
+                    <button id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
+                  </div>
+                  <div className="row4">
+                    <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                  </div>
+                </div>
                 </div>
             }
             else if(!this.state.redirect && !this.state.redirectBack && !this.state.valid && phoneValue.length === 10){
               return <div className="container">
-                <div className="header">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}</div>
+                <div className="header">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}
+                </div>
                 <div className="form"> 
-                  <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone} onChange={this.handleChange}></input>
+                  {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
+                  <div>{this.state.phone}</div>
                   <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
                   <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button></div>
                   <div className="error-message">Invalid :( Please try again.</div>
+                <div className="keypad">
+                  <div className="row1">
+                    <button id="button1" onClick={() => {this.numberUpdate("1")}}>1</button>
+                    <button id="button2" onClick={() => {this.numberUpdate("2")}}>2</button>
+                    <button id="button3" onClick={() => {this.numberUpdate("3")}}>3</button>
+                  </div>
+                  <div className="row2">
+                    <button id="button4" onClick={() => {this.numberUpdate("4")}}>4</button>
+                    <button id="button5" onClick={() => {this.numberUpdate("5")}}>5</button>
+                    <button id="button6" onClick={() => {this.numberUpdate("6")}}>6</button>
+                  </div>
+                  <div className="row3">
+                    <button id="button7" onClick={() => {this.numberUpdate("7")}}>7</button>
+                    <button id="button8" onClick={() => {this.numberUpdate("8")}}>8</button>
+                    <button id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
+                  </div>
+                  <div className="row4">
+                    <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                  </div>
+                </div>
                 </div>
             }
             else if(this.state.redirect && !this.state.redirectBack) {

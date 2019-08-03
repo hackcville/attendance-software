@@ -36,7 +36,6 @@ class WeekNum extends React.Component{
         }
         return(daysInBetween)
     }
-
     weekNumFunction(){
         weekNumberVal = Math.ceil(this.daysInBetweenFunction()/7)
         console.log(weekNumberVal)
