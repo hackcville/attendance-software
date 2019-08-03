@@ -15,7 +15,7 @@ class Phone extends React.Component{
         super(props);
         this.state = {
           students: [], // fields for each student in AirTable Fall 2019 involvement
-          phone: "Input Your Phone Number", // phone number student inputs
+          phone: "Enter your phone number", // phone number student inputs
           idVal: "", // student ID value in AirTable
           valid: true, // set equal to false when the number a student inputs is not valid, is used to show error messages
           attendanceValStudying: null, 
@@ -88,7 +88,7 @@ class Phone extends React.Component{
     }
 
     handleChange(){
-      if (this.state.phone === "Input Your Phone Number"){
+      if (this.state.phone === "Enter your phone number"){
         let numbersTyped = this.state.numberClicked;
         this.setState({phone: numbersTyped, valid: true});
         phoneValue = numbersTyped;
@@ -109,7 +109,7 @@ class Phone extends React.Component{
     backspaceFunc(){
       let currentPhoneVal = this.state.phone
       currentPhoneVal = currentPhoneVal.slice(0, currentPhoneVal.length-1)
-      this.setState({phone: currentPhoneVal})
+      this.setState({phone: currentPhoneVal, valid: true})
       phoneValue = currentPhoneVal;
       this.studentData();
     }
@@ -225,8 +225,7 @@ renderRedirectBack = () => {
               <div className="form"> 
                 {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
                 <div>{this.state.phone}</div>
-                <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
-                <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
+                <button className="back" onClick={() => this.setState({redirectBack: true})}>Return</button>
               </div>
               <div className="keypad">
                   <div className="row1">
@@ -245,8 +244,9 @@ renderRedirectBack = () => {
                     <button onTouchStart={preventDoubleTapZoom} id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
                   </div>
                   <div className="row4">
+                    <button onTouchStart={preventDoubleTapZoom} id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
                     <button onTouchStart={preventDoubleTapZoom} id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
-                    <button onTouchStart={preventDoubleTapZoom} id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                    <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button> 
                   </div>
                 </div>
             </div>
@@ -256,8 +256,7 @@ renderRedirectBack = () => {
                 <div className="heading">Sign in to {this.props.eventVar}{this.props.studying}{this.props.officeHours}{this.props.courseName} {this.props.courseSection}</div>
                 <div className="form"> 
                   <div>{this.state.phone}</div>
-                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
-                  <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
+                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Return</button>
                   </div>
                   <div className="error-message">Need at least 10 digits. Please try again.</div>
                   <div className="keypad">
@@ -279,6 +278,7 @@ renderRedirectBack = () => {
                   <div className="row4">
                     <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
                     <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                    <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
                   </div>
                 </div>
                 </div>
@@ -289,8 +289,7 @@ renderRedirectBack = () => {
                 <div className="form"> 
                 {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
                   <div>{this.state.phone}</div>
-                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
-                  <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
+                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Return</button>
                   </div>
                   <div className="error-message">Need only 10 digits. Please try again.</div>
                   <div className="keypad">
@@ -310,8 +309,9 @@ renderRedirectBack = () => {
                     <button id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
                   </div>
                   <div className="row4">
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
                     <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                    <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button> 
                   </div>
                 </div>
                 </div>
@@ -323,9 +323,9 @@ renderRedirectBack = () => {
                 <div className="form"> 
                   {/* <input id="phone-input" placeholder="tap here" className="phone-number" type="text" value={this.state.phone}></input> */}
                   <div>{this.state.phone}</div>
-                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Back</button>
-                  <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button></div>
+                  <button className="back" onClick={() => this.setState({redirectBack: true})}>Return</button>
                   <div className="error-message">Invalid :( Please try again.</div>
+                </div>
                 <div className="keypad">
                   <div className="row1">
                     <button id="button1" onClick={() => {this.numberUpdate("1")}}>1</button>
@@ -343,8 +343,9 @@ renderRedirectBack = () => {
                     <button id="button9" onClick={() => {this.numberUpdate("9")}}>9</button>
                   </div>
                   <div className="row4">
-                    <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button> 
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
+                    <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button> 
+                    <button className="submit" onClick={() => {this.state.idVal != "" ? this.handleSubmit(this.state.idVal, studentObjectList[this.state.idVal][this.props.weekNumber-1], studentObjectList[this.state.idVal][this.props.weekNumber+9], this.props.courseID, this.props.courseAtt, this.state.pointsVal, this.state.attendanceValStudying, this.state.attendanceValEvent) : this.invalidPhoneNumber() ; if (this.state.idVal != "") {this.setRedirect()}}}>Submit!</button>
                   </div>
                 </div>
                 </div>
