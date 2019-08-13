@@ -13,9 +13,6 @@ let weekNumberVal = 0;
 
 
 class WeekNum extends React.Component{
-    constructor(props){
-        super(props);
-    }
 
     daysInMonth (month, year) { 
         return new Date(year, month, 0).getDate(); 
@@ -26,14 +23,16 @@ class WeekNum extends React.Component{
             daysInBetween = currentDay - startDay;
         }
         else if (currentMonth - startMonth === 1){
-            let startMonthDays = this.daysInMonth(startMonth + 1, startYear, 0)
+            let startMonthDays = this.daysInMonth(startMonth, startYear, 0)
+            console.log(startMonthDays)
             daysInBetween = startMonthDays - startDay + currentDay
         }
         else if (currentMonth - startMonth > 1){
-            let startMonthDays = this.daysInMonth(startMonth+1, startYear, 0)
-            let middleMonthDays = this.daysInMonth(startMonth + 2, currentYear, 0)
+            let startMonthDays = this.daysInMonth(startMonth, startYear, 0)
+            let middleMonthDays = this.daysInMonth(startMonth + 1, currentYear, 0)
             daysInBetween = startMonthDays - startDay + middleMonthDays + currentDay
         }
+        console.log(daysInBetween)
         return(daysInBetween)
     }
     weekNumFunction(){
