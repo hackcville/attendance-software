@@ -166,7 +166,7 @@ class CoursePage extends React.Component {
               <div className="all-courses"> {this.buttonDataFunction()}</div>
               <div className="all-events">{this.eventsButtonDataFunction()}</div>
               <div className="other">
-                <div><button onClick = {() => {this.setState({OHBoolean: true, officeHours: "Check Ins", courseClicked: true}); this.setRedirect();}}>Office Hours</button></div>
+                <div><button onClick = {() => {this.setState({OHBoolean: true, officeHours: "Check Ins", courseClicked: true}); this.setRedirect();}}>Check Ins</button></div>
                 <div><button onClick = {() => {this.setState({studyingBoolean: true, studying: "Studying"}); this.setRedirect()}}>Studying</button></div>
               </div>
             </div>
