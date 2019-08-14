@@ -47,8 +47,12 @@ class Phone extends React.Component{
           console.log(this.state.students[i].fields["Events Attended"])
           console.log(zz)
           console.log(phoneValue)
-          let studentFullName = this.state.students[i].fields.Name // storing the full name of the student 
-          let studentFirstName = studentFullName.replace(/\s\w+$/g, "")
+          let studentFullName = "";
+          let studentFirstName = "";
+          if (this.state.students[i].fields.Name !== undefined){
+            let studentFullName = this.state.students[i].fields.Name // storing the full name of the student 
+            let studentFirstName = studentFullName.replace(/\s\w+$/g, "")
+          }
           if (phoneValue == zz && zz != "" && phoneValue != ""){
             console.log("oh yeah")
             console.log(this.state.students[i].id)
