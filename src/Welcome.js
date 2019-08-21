@@ -24,11 +24,7 @@ class Welcome extends React.Component {
         if (!this.state.redirect){
         return <div id="thanks-screen" className="container">
             <div className="all-text">
-                <p>Welcome, <span className="name">{this.props.student}</span>!
-                <br/> 
-                You just earned <span className="new-points">{this.props.pointsAddedToAT}</span> point{this.props.pluralOrNot}.
-                <br/>
-                You have a total of <span className="total-points">{this.props.points}</span> points.</p>
+                <p className="welcome">Welcome, <span className="name">{this.props.student}</span>!/>
             </div>
         </div>
         }
