@@ -24,7 +24,7 @@ class Welcome extends React.Component {
         if (!this.state.redirect){
         return <div id="thanks-screen" className="container">
             <div className="all-text">
-                <p className="welcome">Welcome, <span className="name">{this.props.student}</span>!/></p>
+                <p className="welcome">Welcome, <span className="name">{this.props.student}</span>!</p>
             </div>
         </div>
         }
