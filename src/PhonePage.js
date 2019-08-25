@@ -298,7 +298,7 @@ renderRedirectBack = () => {
                   <div className="row4">
                     <button></button>
                     <button onTouchStart={preventDoubleTapZoom} id="button0" onClick={() => {this.numberUpdate("0")}}>0</button> 
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#x232b;</button>
                   </div>
                 </div>
             </div>
@@ -332,7 +332,7 @@ renderRedirectBack = () => {
                   <div className="row4">
                     <button></button>
                     <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#x232b;</button>
                   </div>
                 </div>
                 </div>
@@ -366,7 +366,7 @@ renderRedirectBack = () => {
                   <div className="row4">
                     <button></button>
                     <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button>
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#x232b;</button>
                   </div>
                 </div>
                 </div>
@@ -401,7 +401,7 @@ renderRedirectBack = () => {
                   <div className="row4">
                     <button></button>
                     <button id="button0" onClick={() => {this.numberUpdate("0")}}>0</button> 
-                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#8592;</button>
+                    <button id="backspace" onClick={() => {this.backspaceFunc()}}>&#x232b;</button>
                   </div>
                 </div>
                 </div>
